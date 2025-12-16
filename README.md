@@ -3,7 +3,7 @@
 A multi-tenant project management system built with Django (Backend) and React (Frontend).
 
 ![Project Dashboard](screenshots/dashboard.png)
-![Task Board](screenshots/task-board.png)
+![Task Board](screenshots/taskboard.png)
 
 ## Features
 
