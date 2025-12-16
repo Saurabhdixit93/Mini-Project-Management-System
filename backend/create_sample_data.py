@@ -1,140 +1,165 @@
+#!/usr/bin/env python
 """
-Script to create sample data for testing
-Run with: python manage.py shell < create_sample_data.py
+Script to create sample data for the project management system.
 """
+
+import os
+import sys
+import django
+
+# Add the project directory to the Python path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+# Set up Django
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+django.setup()
+
 from core.models import Organization, Project, Task, TaskComment
-from datetime import datetime, timedelta
 
-# Create organizations
-org1 = Organization.objects.create(
-    name="Acme Corporation",
-    slug="acme-corp",
-    contact_email="contact@acme.com"
-)
+def create_sample_data():
+    """Create sample organizations, projects, tasks, and comments."""
+    
+    # Clear existing data
+    TaskComment.objects.all().delete()
+    Task.objects.all().delete()
+    Project.objects.all().delete()
+    Organization.objects.all().delete()
+    
+    print("Creating sample organizations...")
+    
+    # Create organizations
+    acme = Organization.objects.create(
+        name="Acme Corporation",
+        slug="acme-corp",
+        contact_email="contact@acme.com"
+    )
+    
+    techstart = Organization.objects.create(
+        name="TechStart Inc",
+        slug="techstart",
+        contact_email="hello@techstart.com"
+    )
+    
+    print("Creating sample projects...")
+    
+    # Create projects for Acme
+    website_project = Project.objects.create(
+        organization=acme,
+        name="Company Website Redesign",
+        description="Redesign the company website with modern UI/UX",
+        status="ACTIVE",
+        due_date="2026-03-15"
+    )
+    
+    marketing_project = Project.objects.create(
+        organization=acme,
+        name="Marketing Campaign",
+        description="Q1 marketing campaign for product launch",
+        status="ACTIVE",
+        due_date="2026-02-28"
+    )
+    
+    hr_project = Project.objects.create(
+        organization=acme,
+        name="HR System Upgrade",
+        description="Upgrade HR management system",
+        status="ON_HOLD"
+    )
+    
+    # Create projects for TechStart
+    mobile_app = Project.objects.create(
+        organization=techstart,
+        name="Mobile Banking App",
+        description="Develop a secure mobile banking application",
+        status="ACTIVE",
+        due_date="2026-06-30"
+    )
+    
+    api_development = Project.objects.create(
+        organization=techstart,
+        name="Payment API",
+        description="RESTful API for payment processing",
+        status="COMPLETED"
+    )
+    
+    print("Creating sample tasks...")
+    
+    # Create tasks for website project
+    task1 = Task.objects.create(
+        project=website_project,
+        title="Design Homepage Layout",
+        description="Create wireframes and mockups for homepage",
+        status="DONE",
+        assignee_email="designer@acme.com",
+        due_date="2026-01-15"
+    )
+    
+    task2 = Task.objects.create(
+        project=website_project,
+        title="Implement Responsive Design",
+        description="Ensure website works on all device sizes",
+        status="IN_PROGRESS",
+        assignee_email="developer@acme.com"
+    )
+    
+    task3 = Task.objects.create(
+        project=website_project,
+        title="SEO Optimization",
+        description="Optimize website for search engines",
+        status="TODO",
+        assignee_email="seo@acme.com"
+    )
+    
+    # Create tasks for mobile app project
+    task4 = Task.objects.create(
+        project=mobile_app,
+        title="User Authentication",
+        description="Implement secure user login and registration",
+        status="IN_PROGRESS",
+        assignee_email="auth@techstart.com"
+    )
+    
+    task5 = Task.objects.create(
+        project=mobile_app,
+        title="Payment Processing",
+        description="Integrate payment gateway",
+        status="TODO",
+        assignee_email="payments@techstart.com"
+    )
+    
+    print("Creating sample comments...")
+    
+    # Create comments
+    TaskComment.objects.create(
+        task=task1,
+        content="Homepage design looks great! Just a few minor adjustments needed.",
+        author_email="manager@acme.com"
+    )
+    
+    TaskComment.objects.create(
+        task=task1,
+        content="Thanks for the feedback. I'll make those changes by Friday.",
+        author_email="designer@acme.com"
+    )
+    
+    TaskComment.objects.create(
+        task=task2,
+        content="Having some issues with the mobile menu. Need to discuss approach.",
+        author_email="developer@acme.com"
+    )
+    
+    print("Sample data created successfully!")
+    print("\nOrganizations:")
+    for org in Organization.objects.all():
+        print(f"  - {org.name} ({org.slug})")
+        
+    print("\nProjects:")
+    for project in Project.objects.all():
+        print(f"  - {project.name} ({project.status}) - {project.organization.name}")
+        
+    print("\nTasks:")
+    for task in Task.objects.all()[:5]:
+        print(f"  - {task.title} ({task.status}) - {task.project.name}")
 
-org2 = Organization.objects.create(
-    name="TechStart Inc",
-    slug="techstart",
-    contact_email="hello@techstart.io"
-)
-
-# Create projects for Acme Corp
-project1 = Project.objects.create(
-    organization=org1,
-    name="Website Redesign",
-    description="Complete overhaul of company website with modern design",
-    status="ACTIVE",
-    due_date=datetime.now().date() + timedelta(days=30)
-)
-
-project2 = Project.objects.create(
-    organization=org1,
-    name="Mobile App Development",
-    description="iOS and Android app for customer engagement",
-    status="ACTIVE",
-    due_date=datetime.now().date() + timedelta(days=60)
-)
-
-project3 = Project.objects.create(
-    organization=org1,
-    name="Q4 Marketing Campaign",
-    description="Holiday season marketing push",
-    status="COMPLETED",
-    due_date=datetime.now().date() - timedelta(days=10)
-)
-
-# Create projects for TechStart
-project4 = Project.objects.create(
-    organization=org2,
-    name="MVP Development",
-    description="Build minimum viable product for launch",
-    status="ACTIVE",
-    due_date=datetime.now().date() + timedelta(days=45)
-)
-
-# Create tasks for Website Redesign
-task1 = Task.objects.create(
-    project=project1,
-    title="Design homepage mockup",
-    description="Create high-fidelity mockup for new homepage",
-    status="DONE",
-    assignee_email="designer@acme.com",
-    due_date=datetime.now() + timedelta(days=5)
-)
-
-task2 = Task.objects.create(
-    project=project1,
-    title="Implement responsive navigation",
-    description="Build mobile-friendly navigation component",
-    status="IN_PROGRESS",
-    assignee_email="dev@acme.com",
-    due_date=datetime.now() + timedelta(days=10)
-)
-
-task3 = Task.objects.create(
-    project=project1,
-    title="Setup CI/CD pipeline",
-    description="Configure automated deployment",
-    status="TODO",
-    assignee_email="devops@acme.com",
-    due_date=datetime.now() + timedelta(days=15)
-)
-
-# Create tasks for Mobile App
-task4 = Task.objects.create(
-    project=project2,
-    title="Setup React Native project",
-    description="Initialize project with necessary dependencies",
-    status="DONE",
-    assignee_email="mobile@acme.com"
-)
-
-task5 = Task.objects.create(
-    project=project2,
-    title="Implement user authentication",
-    description="Add login and signup flows",
-    status="IN_PROGRESS",
-    assignee_email="mobile@acme.com"
-)
-
-# Create tasks for MVP
-task6 = Task.objects.create(
-    project=project4,
-    title="Database schema design",
-    description="Design initial database structure",
-    status="DONE",
-    assignee_email="backend@techstart.io"
-)
-
-task7 = Task.objects.create(
-    project=project4,
-    title="API development",
-    description="Build RESTful API endpoints",
-    status="IN_PROGRESS",
-    assignee_email="backend@techstart.io"
-)
-
-# Create comments
-TaskComment.objects.create(
-    task=task2,
-    content="Making good progress, should be done by tomorrow",
-    author_email="dev@acme.com"
-)
-
-TaskComment.objects.create(
-    task=task2,
-    content="Looks great! Let me know if you need design feedback",
-    author_email="designer@acme.com"
-)
-
-TaskComment.objects.create(
-    task=task5,
-    content="OAuth integration is complete, working on session management",
-    author_email="mobile@acme.com"
-)
-
-print("Sample data created successfully!")
-print(f"Organizations: {Organization.objects.count()}")
-print(f"Projects: {Project.objects.count()}")
-print(f"Tasks: {Task.objects.count()}")
-print(f"Comments: {TaskComment.objects.count()}")
+if __name__ == "__main__":
+    create_sample_data()

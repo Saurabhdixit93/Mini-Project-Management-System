@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -8,19 +8,42 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 export const Input: React.FC<InputProps> = ({
   label,
   error,
-  className = '',
+  className = "",
+  id,
   ...props
 }) => {
+  // Generate a unique ID if not provided
+  const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
+
   return (
     <div className="mb-4">
-      {label && <label className="label">{label}</label>}
-      <input className={`input ${error ? 'border-red-500' : ''} ${className}`} {...props} />
-      {error && <p className="mt-1 text-sm text-red-400">{error}</p>}
+      {label && (
+        <label htmlFor={inputId} className="label">
+          {label}
+        </label>
+      )}
+      <input
+        id={inputId}
+        className={`input ${error ? "border-red-500" : ""} ${className}`}
+        aria-invalid={!!error}
+        aria-describedby={error ? `${inputId}-error` : undefined}
+        {...props}
+      />
+      {error && (
+        <p
+          id={`${inputId}-error`}
+          className="mt-1 text-sm text-red-400"
+          role="alert"
+        >
+          {error}
+        </p>
+      )}
     </div>
   );
 };
 
-interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface TextAreaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: string;
 }
@@ -28,18 +51,37 @@ interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
 export const TextArea: React.FC<TextAreaProps> = ({
   label,
   error,
-  className = '',
+  className = "",
+  id,
   ...props
 }) => {
+  // Generate a unique ID if not provided
+  const inputId = id || `textarea-${Math.random().toString(36).substr(2, 9)}`;
+
   return (
     <div className="mb-4">
-      {label && <label className="label">{label}</label>}
+      {label && (
+        <label htmlFor={inputId} className="label">
+          {label}
+        </label>
+      )}
       <textarea
-        className={`input ${error ? 'border-red-500' : ''} ${className}`}
+        id={inputId}
+        className={`input ${error ? "border-red-500" : ""} ${className}`}
         rows={4}
+        aria-invalid={!!error}
+        aria-describedby={error ? `${inputId}-error` : undefined}
         {...props}
       />
-      {error && <p className="mt-1 text-sm text-red-400">{error}</p>}
+      {error && (
+        <p
+          id={`${inputId}-error`}
+          className="mt-1 text-sm text-red-400"
+          role="alert"
+        >
+          {error}
+        </p>
+      )}
     </div>
   );
 };
@@ -54,20 +96,42 @@ export const Select: React.FC<SelectProps> = ({
   label,
   error,
   options,
-  className = '',
+  className = "",
+  id,
   ...props
 }) => {
+  // Generate a unique ID if not provided
+  const inputId = id || `select-${Math.random().toString(36).substr(2, 9)}`;
+
   return (
     <div className="mb-4">
-      {label && <label className="label">{label}</label>}
-      <select className={`input ${error ? 'border-red-500' : ''} ${className}`} {...props}>
+      {label && (
+        <label htmlFor={inputId} className="label">
+          {label}
+        </label>
+      )}
+      <select
+        id={inputId}
+        className={`input ${error ? "border-red-500" : ""} ${className}`}
+        aria-invalid={!!error}
+        aria-describedby={error ? `${inputId}-error` : undefined}
+        {...props}
+      >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>
         ))}
       </select>
-      {error && <p className="mt-1 text-sm text-red-400">{error}</p>}
+      {error && (
+        <p
+          id={`${inputId}-error`}
+          className="mt-1 text-sm text-red-400"
+          role="alert"
+        >
+          {error}
+        </p>
+      )}
     </div>
   );
 };

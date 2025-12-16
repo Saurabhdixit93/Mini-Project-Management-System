@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useMutation } from '@apollo/client/react';
-import { CREATE_TASK, UPDATE_TASK } from '../graphql/mutations';
-import type { Task } from '../types';
-import { Button } from './ui/Button';
-import { Input, TextArea, Select } from './ui/Input';
-import { X } from 'lucide-react';
+import React, { useState } from "react";
+import { useMutation } from "@apollo/client/react";
+import { CREATE_TASK, UPDATE_TASK } from "../graphql/mutations";
+import type { Task } from "../types";
+import { Button } from "./ui/Button";
+import { Input, TextArea, Select } from "./ui/Input";
+import { X } from "lucide-react";
 
 interface TaskDetailProps {
   task?: Task;
@@ -22,11 +22,11 @@ const TaskDetail: React.FC<TaskDetailProps> = ({
   onUpdate,
 }) => {
   const [formData, setFormData] = useState({
-    title: task?.title || '',
-    description: task?.description || '',
-    status: task?.status || initialStatus || 'TODO',
-    assigneeEmail: task?.assigneeEmail || '',
-    dueDate: task?.dueDate ? task.dueDate.split('T')[0] : '',
+    title: task?.title || "",
+    description: task?.description || "",
+    status: task?.status || initialStatus || "TODO",
+    assigneeEmail: task?.assigneeEmail || "",
+    dueDate: task?.dueDate ? task.dueDate.split("T")[0] : "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -40,11 +40,14 @@ const TaskDetail: React.FC<TaskDetailProps> = ({
     const newErrors: Record<string, string> = {};
 
     if (!formData.title.trim()) {
-      newErrors.title = 'Task title is required';
+      newErrors.title = "Task title is required";
     }
 
-    if (formData.assigneeEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.assigneeEmail)) {
-      newErrors.assigneeEmail = 'Invalid email address';
+    if (
+      formData.assigneeEmail &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.assigneeEmail)
+    ) {
+      newErrors.assigneeEmail = "Invalid email address";
     }
 
     setErrors(newErrors);
@@ -62,7 +65,9 @@ const TaskDetail: React.FC<TaskDetailProps> = ({
         description: formData.description,
         status: formData.status,
         assigneeEmail: formData.assigneeEmail,
-        dueDate: formData.dueDate ? new Date(formData.dueDate).toISOString() : null,
+        dueDate: formData.dueDate
+          ? new Date(formData.dueDate).toISOString()
+          : null,
       };
 
       if (task) {
@@ -83,13 +88,15 @@ const TaskDetail: React.FC<TaskDetailProps> = ({
 
       onUpdate();
     } catch (error: any) {
-      console.error('Error saving task:', error);
+      console.error("Error saving task:", error);
       setErrors({ submit: error.message });
     }
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -108,7 +115,7 @@ const TaskDetail: React.FC<TaskDetailProps> = ({
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-white">
-              {task ? 'Edit Task' : 'Create New Task'}
+              {task ? "Edit Task" : "Create New Task"}
             </h2>
             <button
               onClick={onClose}
@@ -143,9 +150,9 @@ const TaskDetail: React.FC<TaskDetailProps> = ({
               value={formData.status}
               onChange={handleChange}
               options={[
-                { value: 'TODO', label: 'To Do' },
-                { value: 'IN_PROGRESS', label: 'In Progress' },
-                { value: 'DONE', label: 'Done' },
+                { value: "TODO", label: "To Do" },
+                { value: "IN_PROGRESS", label: "In Progress" },
+                { value: "DONE", label: "Done" },
               ]}
             />
 
@@ -174,11 +181,16 @@ const TaskDetail: React.FC<TaskDetailProps> = ({
             )}
 
             <div className="flex gap-3 justify-end">
-              <Button type="button" variant="secondary" onClick={onClose} disabled={loading}>
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={onClose}
+                disabled={loading}
+              >
                 Cancel
               </Button>
               <Button type="submit" disabled={loading}>
-                {loading ? 'Saving...' : task ? 'Update Task' : 'Create Task'}
+                {loading ? "Saving..." : task ? "Update Task" : "Create Task"}
               </Button>
             </div>
           </form>

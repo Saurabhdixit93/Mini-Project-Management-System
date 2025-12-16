@@ -1,15 +1,15 @@
-import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useQuery } from '@apollo/client/react';
-import { GET_PROJECT } from '../graphql/queries';
-import type { Project } from '../types';
-import { Card } from './ui/Card';
-import { Button } from './ui/Button';
-import { ArrowLeft, Calendar, Edit } from 'lucide-react';
-import { format } from 'date-fns';
-import TaskBoard from './TaskBoard';
-import { useState } from 'react';
-import ProjectForm from './ProjectForm';
+import React from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useQuery } from "@apollo/client/react";
+import { GET_PROJECT } from "../graphql/queries";
+import type { Project } from "../types";
+import { Card } from "./ui/Card";
+import { Button } from "./ui/Button";
+import { ArrowLeft, Calendar, Edit } from "lucide-react";
+import { format } from "date-fns";
+import TaskBoard from "./TaskBoard";
+import { useState } from "react";
+import ProjectForm from "./ProjectForm";
 
 interface ProjectDetailProps {
   organizationSlug: string;
@@ -20,28 +20,31 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ organizationSlug }) => {
   const navigate = useNavigate();
   const [showEditForm, setShowEditForm] = useState(false);
 
-  const { data, loading, error, refetch } = useQuery<{ project: Project }>(GET_PROJECT, {
-    variables: { id: id!, organizationSlug },
-    skip: !id,
-  });
+  const { data, loading, error, refetch } = useQuery<{ project: Project }>(
+    GET_PROJECT,
+    {
+      variables: { id: id!, organizationSlug },
+      skip: !id,
+    }
+  );
 
   const project: Project | undefined = data?.project;
 
   const getStatusClass = (status: string) => {
     switch (status) {
-      case 'ACTIVE':
-        return 'status-active';
-      case 'COMPLETED':
-        return 'status-completed';
-      case 'ON_HOLD':
-        return 'status-on-hold';
+      case "ACTIVE":
+        return "status-active";
+      case "COMPLETED":
+        return "status-completed";
+      case "ON_HOLD":
+        return "status-on-hold";
       default:
-        return 'status-active';
+        return "status-active";
     }
   };
 
   const getStatusLabel = (status: string) => {
-    return status.replace('_', ' ');
+    return status.replace("_", " ");
   };
 
   if (loading) {
@@ -62,8 +65,10 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ organizationSlug }) => {
       <div className="min-h-screen bg-slate-900 p-8">
         <div className="max-w-7xl mx-auto">
           <Card>
-            <p className="text-red-400">Error loading project: {error?.message || 'Not found'}</p>
-            <Button onClick={() => navigate('/')} className="mt-4">
+            <p className="text-red-400">
+              Error loading project: {error?.message || "Not found"}
+            </p>
+            <Button onClick={() => navigate("/")} className="mt-4">
               <ArrowLeft className="w-4 h-4 mr-2 inline" />
               Back to Dashboard
             </Button>
@@ -80,7 +85,7 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ organizationSlug }) => {
         <div className="max-w-7xl mx-auto p-8">
           <Button
             variant="secondary"
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
             className="mb-4"
           >
             <ArrowLeft className="w-4 h-4 mr-2 inline" />
@@ -90,12 +95,16 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ organizationSlug }) => {
           <div className="flex justify-between items-start">
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-4xl font-bold text-white">{project.name}</h1>
+                <h1 className="text-4xl font-bold text-white">
+                  {project.name}
+                </h1>
                 <span className={getStatusClass(project.status)}>
                   {getStatusLabel(project.status)}
                 </span>
               </div>
-              <p className="text-slate-400 max-w-2xl">{project.description || 'No description'}</p>
+              <p className="text-slate-400 max-w-2xl">
+                {project.description || "No description"}
+              </p>
             </div>
 
             <Button onClick={() => setShowEditForm(true)}>
@@ -108,24 +117,30 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ organizationSlug }) => {
             <div className="flex items-center gap-2 text-slate-400">
               <Calendar className="w-4 h-4" />
               {project.dueDate ? (
-                <span>Due {format(new Date(project.dueDate), 'MMMM dd, yyyy')}</span>
+                <span>
+                  Due {format(new Date(project.dueDate), "MMMM dd, yyyy")}
+                </span>
               ) : (
                 <span>No due date</span>
               )}
             </div>
 
             <div className="text-slate-400">
-              <span className="font-medium text-white">{project.completedTasks}</span> /{' '}
-              {project.taskCount} tasks completed
+              <span className="font-medium text-white">
+                {project.completedTasks}
+              </span>{" "}
+              / {project.taskCount} tasks completed
             </div>
 
             <div className="text-slate-400">
               <span className="font-medium text-white">
                 {project.taskCount > 0
-                  ? Math.round((project.completedTasks / project.taskCount) * 100)
+                  ? Math.round(
+                      (project.completedTasks / project.taskCount) * 100
+                    )
                   : 0}
                 %
-              </span>{' '}
+              </span>{" "}
               progress
             </div>
           </div>

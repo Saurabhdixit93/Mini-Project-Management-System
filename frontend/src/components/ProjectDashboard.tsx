@@ -1,47 +1,55 @@
-import React, { useState } from 'react';
-import { useQuery } from '@apollo/client/react';
-import { GET_PROJECTS, GET_PROJECT_STATS } from '../graphql/queries';
-import type { Project, ProjectStats } from '../types';
-import { Card } from './ui/Card';
-import { Button } from './ui/Button';
-import { Plus, Calendar, CheckCircle2, Circle } from 'lucide-react';
-import { format } from 'date-fns';
-import ProjectForm from './ProjectForm';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { useQuery } from "@apollo/client/react";
+import { GET_PROJECTS, GET_PROJECT_STATS } from "../graphql/queries";
+import type { Project, ProjectStats } from "../types";
+import { Card } from "./ui/Card";
+import { Button } from "./ui/Button";
+import { Plus, Calendar, CheckCircle2, Circle } from "lucide-react";
+import { format } from "date-fns";
+import ProjectForm from "./ProjectForm";
+import { Link } from "react-router-dom";
 
 interface ProjectDashboardProps {
   organizationSlug: string;
 }
 
-const ProjectDashboard: React.FC<ProjectDashboardProps> = ({ organizationSlug }) => {
+const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
+  organizationSlug,
+}) => {
   const [showCreateForm, setShowCreateForm] = useState(false);
 
-  const { data, loading, error, refetch } = useQuery<{ projects: Project[] }>(GET_PROJECTS, {
-    variables: { organizationSlug },
-  });
+  const { data, loading, error, refetch } = useQuery<{ projects: Project[] }>(
+    GET_PROJECTS,
+    {
+      variables: { organizationSlug },
+    }
+  );
 
-  const { data: statsData } = useQuery<{ projectStats: ProjectStats }>(GET_PROJECT_STATS, {
-    variables: { organizationSlug },
-  });
+  const { data: statsData } = useQuery<{ projectStats: ProjectStats }>(
+    GET_PROJECT_STATS,
+    {
+      variables: { organizationSlug },
+    }
+  );
 
   const projects: Project[] = data?.projects || [];
   const stats: ProjectStats | undefined = statsData?.projectStats;
 
   const getStatusClass = (status: string) => {
     switch (status) {
-      case 'ACTIVE':
-        return 'status-active';
-      case 'COMPLETED':
-        return 'status-completed';
-      case 'ON_HOLD':
-        return 'status-on-hold';
+      case "ACTIVE":
+        return "status-active";
+      case "COMPLETED":
+        return "status-completed";
+      case "ON_HOLD":
+        return "status-on-hold";
       default:
-        return 'status-active';
+        return "status-active";
     }
   };
 
   const getStatusLabel = (status: string) => {
-    return status.replace('_', ' ');
+    return status.replace("_", " ");
   };
 
   if (loading) {
@@ -66,7 +74,9 @@ const ProjectDashboard: React.FC<ProjectDashboardProps> = ({ organizationSlug })
       <div className="min-h-screen bg-slate-900 p-8">
         <div className="max-w-7xl mx-auto">
           <Card>
-            <p className="text-red-400">Error loading projects: {error.message}</p>
+            <p className="text-red-400">
+              Error loading projects: {error.message}
+            </p>
           </Card>
         </div>
       </div>
@@ -80,7 +90,9 @@ const ProjectDashboard: React.FC<ProjectDashboardProps> = ({ organizationSlug })
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-4xl font-bold text-white mb-2">Projects</h1>
-            <p className="text-slate-400">Manage your organization's projects</p>
+            <p className="text-slate-400">
+              Manage your organization's projects
+            </p>
           </div>
           <Button onClick={() => setShowCreateForm(true)}>
             <Plus className="w-5 h-5 mr-2 inline" />
@@ -90,53 +102,74 @@ const ProjectDashboard: React.FC<ProjectDashboardProps> = ({ organizationSlug })
 
         {/* Statistics */}
         {stats && (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <Card className="animate-fade-in">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <Card className="animate-fade-in p-4 sm:p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-slate-400 text-sm">Total Projects</p>
-                  <p className="text-3xl font-bold text-white mt-1">{stats.totalProjects}</p>
+                  <p className="text-slate-400 text-xs sm:text-sm">
+                    Total Projects
+                  </p>
+                  <p className="text-2xl sm:text-3xl font-bold text-white mt-1">
+                    {stats.totalProjects}
+                  </p>
                 </div>
-                <div className="w-12 h-12 bg-primary-500/20 rounded-lg flex items-center justify-center">
-                  <Circle className="w-6 h-6 text-primary-400" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary-500/20 rounded-lg flex items-center justify-center">
+                  <Circle className="w-5 h-5 sm:w-6 sm:h-6 text-primary-400" />
                 </div>
               </div>
             </Card>
 
-            <Card className="animate-fade-in" style={{ animationDelay: '0.1s' }}>
+            <Card
+              className="animate-fade-in p-4 sm:p-6"
+              style={{ animationDelay: "0.1s" }}
+            >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-slate-400 text-sm">Active</p>
-                  <p className="text-3xl font-bold text-white mt-1">{stats.activeProjects}</p>
+                  <p className="text-slate-400 text-xs sm:text-sm">Active</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-white mt-1">
+                    {stats.activeProjects}
+                  </p>
                 </div>
-                <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
-                  <CheckCircle2 className="w-6 h-6 text-green-400" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
+                  <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-green-400" />
                 </div>
               </div>
             </Card>
 
-            <Card className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
+            <Card
+              className="animate-fade-in p-4 sm:p-6"
+              style={{ animationDelay: "0.2s" }}
+            >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-slate-400 text-sm">Total Tasks</p>
-                  <p className="text-3xl font-bold text-white mt-1">{stats.totalTasks}</p>
+                  <p className="text-slate-400 text-xs sm:text-sm">
+                    Total Tasks
+                  </p>
+                  <p className="text-2xl sm:text-3xl font-bold text-white mt-1">
+                    {stats.totalTasks}
+                  </p>
                 </div>
-                <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                  <Circle className="w-6 h-6 text-purple-400" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                  <Circle className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" />
                 </div>
               </div>
             </Card>
 
-            <Card className="animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            <Card
+              className="animate-fade-in p-4 sm:p-6"
+              style={{ animationDelay: "0.3s" }}
+            >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-slate-400 text-sm">Completion Rate</p>
-                  <p className="text-3xl font-bold text-white mt-1">
+                  <p className="text-slate-400 text-xs sm:text-sm">
+                    Completion Rate
+                  </p>
+                  <p className="text-2xl sm:text-3xl font-bold text-white mt-1">
                     {stats.completionRate.toFixed(0)}%
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                  <CheckCircle2 className="w-6 h-6 text-blue-400" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                  <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" />
                 </div>
               </div>
             </Card>
@@ -152,14 +185,16 @@ const ProjectDashboard: React.FC<ProjectDashboardProps> = ({ organizationSlug })
                 style={{ animationDelay: `${index * 0.05}s` }}
               >
                 <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-xl font-semibold text-white">{project.name}</h3>
+                  <h3 className="text-xl font-semibold text-white">
+                    {project.name}
+                  </h3>
                   <span className={getStatusClass(project.status)}>
                     {getStatusLabel(project.status)}
                   </span>
                 </div>
 
                 <p className="text-slate-400 text-sm mb-4 line-clamp-2">
-                  {project.description || 'No description'}
+                  {project.description || "No description"}
                 </p>
 
                 <div className="flex items-center justify-between text-sm">
@@ -173,7 +208,7 @@ const ProjectDashboard: React.FC<ProjectDashboardProps> = ({ organizationSlug })
                   {project.dueDate && (
                     <div className="flex items-center text-slate-400">
                       <Calendar className="w-4 h-4 mr-1" />
-                      <span>{format(new Date(project.dueDate), 'MMM dd')}</span>
+                      <span>{format(new Date(project.dueDate), "MMM dd")}</span>
                     </div>
                   )}
                 </div>
@@ -199,7 +234,9 @@ const ProjectDashboard: React.FC<ProjectDashboardProps> = ({ organizationSlug })
         {projects.length === 0 && (
           <Card className="text-center py-12">
             <p className="text-slate-400 mb-4">No projects yet</p>
-            <Button onClick={() => setShowCreateForm(true)}>Create your first project</Button>
+            <Button onClick={() => setShowCreateForm(true)}>
+              Create your first project
+            </Button>
           </Card>
         )}
 

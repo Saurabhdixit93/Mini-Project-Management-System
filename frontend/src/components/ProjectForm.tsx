@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useMutation } from '@apollo/client/react';
-import { CREATE_PROJECT, UPDATE_PROJECT } from '../graphql/mutations';
-import type { Project } from '../types';
-import { Button } from './ui/Button';
-import { Input, TextArea, Select } from './ui/Input';
-import { X } from 'lucide-react';
+import React, { useState } from "react";
+import { useMutation } from "@apollo/client/react";
+import { CREATE_PROJECT, UPDATE_PROJECT } from "../graphql/mutations";
+import type { Project } from "../types";
+import { Button } from "./ui/Button";
+import { Input, TextArea, Select } from "./ui/Input";
+import { X } from "lucide-react";
 
 interface ProjectFormProps {
   organizationSlug: string;
@@ -20,10 +20,10 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   onSuccess,
 }) => {
   const [formData, setFormData] = useState({
-    name: project?.name || '',
-    description: project?.description || '',
-    status: project?.status || 'ACTIVE',
-    dueDate: project?.dueDate ? project.dueDate.split('T')[0] : '',
+    name: project?.name || "",
+    description: project?.description || "",
+    status: project?.status || "ACTIVE",
+    dueDate: project?.dueDate ? project.dueDate.split("T")[0] : "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -37,7 +37,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = 'Project name is required';
+      newErrors.name = "Project name is required";
     }
 
     setErrors(newErrors);
@@ -74,13 +74,15 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
 
       onSuccess();
     } catch (error: any) {
-      console.error('Error saving project:', error);
+      console.error("Error saving project:", error);
       setErrors({ submit: error.message });
     }
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -97,7 +99,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-white">
-          {project ? 'Edit Project' : 'New Project'}
+          {project ? "Edit Project" : "New Project"}
         </h2>
         <button
           onClick={onClose}
@@ -132,9 +134,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
           value={formData.status}
           onChange={handleChange}
           options={[
-            { value: 'ACTIVE', label: 'Active' },
-            { value: 'ON_HOLD', label: 'On Hold' },
-            { value: 'COMPLETED', label: 'Completed' },
+            { value: "ACTIVE", label: "Active" },
+            { value: "ON_HOLD", label: "On Hold" },
+            { value: "COMPLETED", label: "Completed" },
           ]}
         />
 
@@ -153,11 +155,20 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         )}
 
         <div className="flex gap-3 justify-end">
-          <Button type="button" variant="secondary" onClick={onClose} disabled={loading}>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={onClose}
+            disabled={loading}
+          >
             Cancel
           </Button>
           <Button type="submit" disabled={loading}>
-            {loading ? 'Saving...' : project ? 'Update Project' : 'Create Project'}
+            {loading
+              ? "Saving..."
+              : project
+              ? "Update Project"
+              : "Create Project"}
           </Button>
         </div>
       </form>

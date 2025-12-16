@@ -1,24 +1,34 @@
-import React from 'react';
+import React from "react";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'danger';
+  variant?: "primary" | "secondary" | "danger";
   children: React.ReactNode;
 }
 
 export const Button: React.FC<ButtonProps> = ({
-  variant = 'primary',
+  variant = "primary",
   children,
-  className = '',
+  className = "",
   ...props
 }) => {
   const variantClasses = {
-    primary: 'btn-primary',
-    secondary: 'btn-secondary',
-    danger: 'btn-danger',
+    primary: "btn-primary",
+    secondary: "btn-secondary",
+    danger: "btn-danger",
+  };
+
+  // Ensure buttons have proper accessibility attributes
+  const ariaProps = {
+    role: "button",
+    tabIndex: 0,
+    ...props,
   };
 
   return (
-    <button className={`${variantClasses[variant]} ${className}`} {...props}>
+    <button
+      className={`${variantClasses[variant]} ${className}`}
+      {...ariaProps}
+    >
       {children}
     </button>
   );

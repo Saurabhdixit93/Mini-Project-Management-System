@@ -37,6 +37,7 @@ type Task {
 ## Queries
 
 ### Get Projects
+
 Fetch all projects for an organization.
 
 ```graphql
@@ -52,6 +53,7 @@ query GetProjects($organizationSlug: String!) {
 ```
 
 ### Get Project Details
+
 Fetch a single project with its tasks.
 
 ```graphql
@@ -70,6 +72,7 @@ query GetProject($id: ID!, $organizationSlug: String!) {
 ```
 
 ### Get Project Examples
+
 Fetch aggregate statistics.
 
 ```graphql
@@ -133,6 +136,7 @@ mutation UpdateTask($id: ID!, $status: String!) {
 ## Error Handling
 
 All mutations return a `success` boolean and an `errors` list strings.
+
 ```json
 {
   "data": {
