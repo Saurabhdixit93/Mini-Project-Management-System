@@ -54,6 +54,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         await updateProject({
           variables: {
             id: project.id,
+            organizationSlug,
             name: formData.name,
             description: formData.description,
             status: formData.status,
@@ -96,16 +97,17 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   };
 
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-white">
+        <h2 className="heading-2">
           {project ? "Edit Project" : "New Project"}
         </h2>
         <button
           onClick={onClose}
-          className="text-slate-400 hover:text-white transition-colors"
+          className="cursor-pointer text-slate-400 hover:text-white transition-colors"
+          aria-label="Close form"
         >
-          <X className="w-6 h-6" />
+          <X className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
       </div>
 

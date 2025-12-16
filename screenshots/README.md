@@ -8,14 +8,8 @@ This directory contains screenshots of the application for documentation purpose
 
 ## Task Board View
 
-![Task Board](task-board.png)
+![Task Board](taskboard.png)
 
 ## Project Detail View
 
-![Project Detail](project-detail.png)
-
-## Task Detail View
-
-![Task Detail](task-detail.png)
-
-_Note: Actual screenshots would be added here in a real implementation._
+![Project Detail](projectdetails.png)

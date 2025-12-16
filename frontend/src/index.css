@@ -14,6 +14,10 @@
 
   --animate-fade-in: fadeIn 0.3s ease-in-out;
   --animate-slide-up: slideUp 0.3s ease-out;
+  --animate-fade-in-slow: fadeIn 0.5s ease-in-out;
+  --animate-slide-up-slow: slideUp 0.5s ease-out;
+  --animate-scale-in: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --animate-scale-in-slow: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
   @keyframes fadeIn {
     0% {
@@ -23,6 +27,7 @@
       opacity: 1;
     }
   }
+
   @keyframes slideUp {
     0% {
       transform: translateY(10px);
@@ -30,6 +35,17 @@
     }
     100% {
       transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes scaleIn {
+    0% {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
       opacity: 1;
     }
   }
@@ -58,58 +74,115 @@ body {
 
 @layer components {
   .card {
-    @apply bg-slate-800 rounded-lg shadow-lg p-4 border border-slate-700 sm:p-6;
+    @apply bg-slate-800 rounded-xl shadow-lg p-4 border border-slate-700 sm:p-6 transition-all duration-300 hover:shadow-xl;
+  }
+
+  .card-animated {
+    @apply bg-slate-800 rounded-xl shadow-lg p-4 border border-slate-700 sm:p-6 transition-all duration-300 hover:shadow-xl animate-scale-in;
   }
 
   .btn {
-    @apply px-3 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 text-sm sm:px-4 sm:py-2;
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 text-sm font-medium sm:px-5 sm:py-2.5;
   }
 
   .btn-primary {
-    @apply px-3 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 text-sm sm:px-4 sm:py-2;
+    @apply cursor-pointer px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 text-sm font-medium sm:px-5 sm:py-2.5 shadow-md hover:shadow-lg;
   }
 
   .btn-secondary {
-    @apply px-3 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 bg-slate-700 text-white hover:bg-slate-600 focus:ring-slate-500 text-sm sm:px-4 sm:py-2;
+    @apply cursor-pointer px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 bg-slate-700 text-white hover:bg-slate-600 focus:ring-slate-500 text-sm font-medium sm:px-5 sm:py-2.5 shadow-md hover:shadow-lg;
   }
 
   .btn-danger {
-    @apply px-3 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 text-sm sm:px-4 sm:py-2;
+    @apply cursor-pointer px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 text-sm font-medium sm:px-5 sm:py-2.5 shadow-md hover:shadow-lg;
   }
 
   .input {
-    @apply w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm sm:px-4 sm:py-2;
+    @apply w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm sm:px-4 sm:py-2.5 transition-all duration-200;
   }
 
   .label {
-    @apply block text-sm font-medium text-slate-300 mb-2;
+    @apply block text-sm font-semibold text-slate-300 mb-2 tracking-wide;
   }
 
   .status-badge {
-    @apply px-2 py-1 rounded-full text-xs font-semibold sm:px-3 sm:py-1;
+    @apply px-3 py-1 rounded-full text-xs font-semibold sm:px-3.5 sm:py-1.5 tracking-wide transition-all duration-200;
   }
 
   .status-active {
-    @apply px-2 py-1 rounded-full text-xs font-semibold bg-green-500/20 text-green-400 border border-green-500/30 sm:px-3 sm:py-1;
+    @apply px-3 py-1 rounded-full text-xs font-semibold bg-green-500/20 text-green-400 border border-green-500/30 sm:px-3.5 sm:py-1.5 tracking-wide transition-all duration-200;
   }
 
   .status-completed {
-    @apply px-2 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-400 border border-blue-500/30 sm:px-3 sm:py-1;
+    @apply px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-400 border border-blue-500/30 sm:px-3.5 sm:py-1.5 tracking-wide transition-all duration-200;
   }
 
   .status-on-hold {
-    @apply px-2 py-1 rounded-full text-xs font-semibold bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 sm:px-3 sm:py-1;
+    @apply px-3 py-1 rounded-full text-xs font-semibold bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 sm:px-3.5 sm:py-1.5 tracking-wide transition-all duration-200;
   }
 
   .status-todo {
-    @apply px-2 py-1 rounded-full text-xs font-semibold bg-slate-500/20 text-slate-400 border border-slate-500/30 sm:px-3 sm:py-1;
+    @apply px-3 py-1 rounded-full text-xs font-semibold bg-slate-500/20 text-slate-400 border border-slate-500/30 sm:px-3.5 sm:py-1.5 tracking-wide transition-all duration-200;
   }
 
   .status-in-progress {
-    @apply px-2 py-1 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-400 border border-purple-500/30 sm:px-3 sm:py-1;
+    @apply px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-400 border border-purple-500/30 sm:px-3.5 sm:py-1.5 tracking-wide transition-all duration-200;
   }
 
   .status-done {
-    @apply px-2 py-1 rounded-full text-xs font-semibold bg-green-500/20 text-green-400 border border-green-500/30 sm:px-3 sm:py-1;
+    @apply px-3 py-1 rounded-full text-xs font-semibold bg-green-500/20 text-green-400 border border-green-500/30 sm:px-3.5 sm:py-1.5 tracking-wide transition-all duration-200;
+  }
+
+  /* Typography enhancements */
+  .heading-1 {
+    @apply text-4xl font-bold text-white tracking-tight;
+  }
+
+  .heading-2 {
+    @apply text-3xl font-bold text-white tracking-tight;
+  }
+
+  .heading-3 {
+    @apply text-2xl font-semibold text-white tracking-tight;
+  }
+
+  .heading-4 {
+    @apply text-xl font-semibold text-white;
+  }
+
+  .text-muted {
+    @apply text-slate-400;
+  }
+
+  .text-small {
+    @apply text-sm;
+  }
+
+  .text-large {
+    @apply text-lg;
+  }
+
+  /* Spacing utilities */
+  .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-y-reverse: 0;
+    margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
+    margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+  }
+
+  .space-x-6 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 0;
+    margin-right: calc(1.5rem * var(--tw-space-x-reverse));
+    margin-left: calc(1.5rem * calc(1 - var(--tw-space-x-reverse)));
+  }
+
+  /* Shadow enhancements */
+  .shadow-card {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .shadow-card-hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
 }

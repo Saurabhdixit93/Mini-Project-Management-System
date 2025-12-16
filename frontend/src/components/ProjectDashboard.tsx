@@ -4,7 +4,13 @@ import { GET_PROJECTS, GET_PROJECT_STATS } from "../graphql/queries";
 import type { Project, ProjectStats } from "../types";
 import { Card } from "./ui/Card";
 import { Button } from "./ui/Button";
-import { Plus, Calendar, CheckCircle2, Circle } from "lucide-react";
+import {
+  Plus,
+  Calendar,
+  CheckCircle2,
+  Circle,
+  GripVertical,
+} from "lucide-react";
 import { format } from "date-fns";
 import ProjectForm from "./ProjectForm";
 import { Link } from "react-router-dom";
@@ -17,6 +23,7 @@ const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
   organizationSlug,
 }) => {
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [dragOver, setDragOver] = useState<boolean>(false);
 
   const { data, loading, error, refetch } = useQuery<{ projects: Project[] }>(
     GET_PROJECTS,
@@ -50,6 +57,23 @@ const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
 
   const getStatusLabel = (status: string) => {
     return status.replace("_", " ");
+  };
+
+  const handleProjectDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    setDragOver(true);
+  };
+
+  const handleProjectDragLeave = () => {
+    setDragOver(false);
+  };
+
+  const handleProjectDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    // For now, we'll just reset the drag state
+    // In a more advanced implementation, you could reorder projects
+    setDragOver(false);
   };
 
   if (loading) {
@@ -87,89 +111,85 @@ const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
     <div className="min-h-screen bg-slate-900 p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-white mb-2">Projects</h1>
-            <p className="text-slate-400">
-              Manage your organization's projects
-            </p>
+            <h1 className="heading-1 mb-2">Projects</h1>
+            <p className="text-muted">Manage your organization's projects</p>
           </div>
-          <Button onClick={() => setShowCreateForm(true)}>
+          <Button
+            onClick={() => setShowCreateForm(true)}
+            className="whitespace-nowrap"
+          >
             <Plus className="w-5 h-5 mr-2 inline" />
-            New Project
+            <span className="hidden xs:inline">New Project</span>
+            <span className="xs:hidden">New</span>
           </Button>
         </div>
 
         {/* Statistics */}
         {stats && (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <Card className="animate-fade-in p-4 sm:p-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <Card className="card-animated p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-slate-400 text-xs sm:text-sm">
-                    Total Projects
-                  </p>
-                  <p className="text-2xl sm:text-3xl font-bold text-white mt-1">
+                  <p className="text-slate-400 text-xs">Total Projects</p>
+                  <p className="text-2xl font-bold text-white mt-1">
                     {stats.totalProjects}
                   </p>
                 </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary-500/20 rounded-lg flex items-center justify-center">
-                  <Circle className="w-5 h-5 sm:w-6 sm:h-6 text-primary-400" />
+                <div className="w-10 h-10 bg-primary-500/20 rounded-lg flex items-center justify-center">
+                  <Circle className="w-5 h-5 text-primary-400" />
                 </div>
               </div>
             </Card>
 
             <Card
-              className="animate-fade-in p-4 sm:p-6"
+              className="card-animated p-4"
               style={{ animationDelay: "0.1s" }}
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-slate-400 text-xs sm:text-sm">Active</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-white mt-1">
+                  <p className="text-slate-400 text-xs">Active</p>
+                  <p className="text-2xl font-bold text-white mt-1">
                     {stats.activeProjects}
                   </p>
                 </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
-                  <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-green-400" />
+                <div className="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
+                  <CheckCircle2 className="w-5 h-5 text-green-400" />
                 </div>
               </div>
             </Card>
 
             <Card
-              className="animate-fade-in p-4 sm:p-6"
+              className="card-animated p-4"
               style={{ animationDelay: "0.2s" }}
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-slate-400 text-xs sm:text-sm">
-                    Total Tasks
-                  </p>
-                  <p className="text-2xl sm:text-3xl font-bold text-white mt-1">
+                  <p className="text-slate-400 text-xs">Total Tasks</p>
+                  <p className="text-2xl font-bold text-white mt-1">
                     {stats.totalTasks}
                   </p>
                 </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                  <Circle className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" />
+                <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                  <Circle className="w-5 h-5 text-purple-400" />
                 </div>
               </div>
             </Card>
 
             <Card
-              className="animate-fade-in p-4 sm:p-6"
+              className="card-animated p-4"
               style={{ animationDelay: "0.3s" }}
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-slate-400 text-xs sm:text-sm">
-                    Completion Rate
-                  </p>
-                  <p className="text-2xl sm:text-3xl font-bold text-white mt-1">
+                  <p className="text-slate-400 text-xs">Completion Rate</p>
+                  <p className="text-2xl font-bold text-white mt-1">
                     {stats.completionRate.toFixed(0)}%
                   </p>
                 </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                  <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" />
+                <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                  <CheckCircle2 className="w-5 h-5 text-blue-400" />
                 </div>
               </div>
             </Card>
@@ -177,56 +197,76 @@ const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
         )}
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-200 ${
+            dragOver ? "opacity-75" : ""
+          }`}
+          onDragOver={handleProjectDragOver}
+          onDragLeave={handleProjectDragLeave}
+          onDrop={handleProjectDrop}
+        >
           {projects.map((project, index) => (
             <Link key={project.id} to={`/projects/${project.id}`}>
-              <Card
-                className="hover:border-primary-500 transition-all duration-200 cursor-pointer animate-slide-up h-full"
-                style={{ animationDelay: `${index * 0.05}s` }}
+              <div
+                draggable
+                onDragStart={(e: React.DragEvent) => {
+                  e.dataTransfer.setData("text/plain", project.id);
+                  e.dataTransfer.effectAllowed = "move";
+                }}
               >
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-xl font-semibold text-white">
-                    {project.name}
-                  </h3>
-                  <span className={getStatusClass(project.status)}>
-                    {getStatusLabel(project.status)}
-                  </span>
-                </div>
-
-                <p className="text-slate-400 text-sm mb-4 line-clamp-2">
-                  {project.description || "No description"}
-                </p>
-
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center text-slate-400">
-                    <CheckCircle2 className="w-4 h-4 mr-1" />
-                    <span>
-                      {project.completedTasks}/{project.taskCount} tasks
+                <Card
+                  className="card-animated hover:border-primary-500 transition-all duration-200 cursor-pointer h-full relative group"
+                  style={{ animationDelay: `${index * 0.05}s` }}
+                >
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-start gap-2">
+                      <GripVertical className="w-4 h-4 text-slate-500 mt-1 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <h3 className="text-xl font-semibold text-white">
+                        {project.name}
+                      </h3>
+                    </div>
+                    <span className={getStatusClass(project.status)}>
+                      {getStatusLabel(project.status)}
                     </span>
                   </div>
 
-                  {project.dueDate && (
-                    <div className="flex items-center text-slate-400">
-                      <Calendar className="w-4 h-4 mr-1" />
-                      <span>{format(new Date(project.dueDate), "MMM dd")}</span>
-                    </div>
-                  )}
-                </div>
+                  <p className="text-slate-400 text-sm mb-4 line-clamp-2">
+                    {project.description || "No description"}
+                  </p>
 
-                {/* Progress Bar */}
-                <div className="mt-4 bg-slate-700 rounded-full h-2 overflow-hidden">
-                  <div
-                    className="bg-primary-500 h-full transition-all duration-300"
-                    style={{
-                      width: `${
-                        project.taskCount > 0
-                          ? (project.completedTasks / project.taskCount) * 100
-                          : 0
-                      }%`,
-                    }}
-                  ></div>
-                </div>
-              </Card>
+                  <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center text-slate-400">
+                      <CheckCircle2 className="w-4 h-4 mr-1" />
+                      <span>
+                        {project.completedTasks}/{project.taskCount} tasks
+                      </span>
+                    </div>
+
+                    {project.dueDate && (
+                      <div className="flex items-center text-slate-400">
+                        <Calendar className="w-4 h-4 mr-1" />
+                        <span>
+                          {format(new Date(project.dueDate), "MMM dd")}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Progress Bar */}
+                  <div className="mt-4 bg-slate-700 rounded-full h-2 overflow-hidden">
+                    <div
+                      className="bg-primary-500 h-full transition-all duration-300"
+                      style={{
+                        width: `${
+                          project.taskCount > 0
+                            ? (project.completedTasks / project.taskCount) * 100
+                            : 0
+                        }%`,
+                      }}
+                    ></div>
+                  </div>
+                </Card>
+              </div>
             </Link>
           ))}
         </div>

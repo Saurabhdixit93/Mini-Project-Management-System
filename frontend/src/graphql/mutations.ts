@@ -35,6 +35,7 @@ export const CREATE_PROJECT = gql`
 export const UPDATE_PROJECT = gql`
   mutation UpdateProject(
     $id: ID!
+    $organizationSlug: String!
     $name: String
     $description: String
     $status: String
@@ -42,6 +43,7 @@ export const UPDATE_PROJECT = gql`
   ) {
     updateProject(
       id: $id
+      organizationSlug: $organizationSlug
       name: $name
       description: $description
       status: $status

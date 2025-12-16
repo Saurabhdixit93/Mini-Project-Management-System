@@ -92,33 +92,35 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ organizationSlug }) => {
             Back to Dashboard
           </Button>
 
-          <div className="flex justify-between items-start">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div>
-              <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-4xl font-bold text-white">
-                  {project.name}
-                </h1>
+              <div className="flex flex-wrap items-center gap-3 mb-2">
+                <h1 className="heading-1">{project.name}</h1>
                 <span className={getStatusClass(project.status)}>
                   {getStatusLabel(project.status)}
                 </span>
               </div>
-              <p className="text-slate-400 max-w-2xl">
+              <p className="text-muted max-w-2xl">
                 {project.description || "No description"}
               </p>
             </div>
 
-            <Button onClick={() => setShowEditForm(true)}>
+            <Button
+              onClick={() => setShowEditForm(true)}
+              className="whitespace-nowrap"
+            >
               <Edit className="w-4 h-4 mr-2 inline" />
-              Edit Project
+              <span className="hidden sm:inline">Edit Project</span>
+              <span className="sm:hidden">Edit</span>
             </Button>
           </div>
 
-          <div className="flex gap-6 mt-6 text-sm">
+          <div className="flex flex-wrap gap-4 sm:gap-6 mt-6 text-sm">
             <div className="flex items-center gap-2 text-slate-400">
-              <Calendar className="w-4 h-4" />
+              <Calendar className="w-4 h-4 flex-shrink-0" />
               {project.dueDate ? (
                 <span>
-                  Due {format(new Date(project.dueDate), "MMMM dd, yyyy")}
+                  Due {format(new Date(project.dueDate), "MMM dd, yyyy")}
                 </span>
               ) : (
                 <span>No due date</span>
@@ -129,7 +131,7 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ organizationSlug }) => {
               <span className="font-medium text-white">
                 {project.completedTasks}
               </span>{" "}
-              / {project.taskCount} tasks completed
+              / {project.taskCount} tasks
             </div>
 
             <div className="text-slate-400">
@@ -141,7 +143,7 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ organizationSlug }) => {
                   : 0}
                 %
               </span>{" "}
-              progress
+              completed
             </div>
           </div>
 
