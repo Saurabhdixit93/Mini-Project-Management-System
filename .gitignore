@@ -1,0 +1,247 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Production builds
+/dist/
+/build/
+/out/
+
+# Misc
+.DS_Store
+.env.local
+.env.*.local
+.project
+.tmp/
+.temp/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+
+# Editor
+*.sublime-project
+*.sublime-workspace
+
+# Database
+*.db
+*.sqlite3
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# Temporary folders
+tmp/
+temp/
+
+# Yarn 2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Docker
+docker-compose.override.yml
+
+# Backend specific
+/backend/db.sqlite3
+/backend/db.sqlite3-journal
+/backend/media/
+/backend/staticfiles/
+/backend/collected_static/
+/backend/local_settings.py
+/backend/.env
+/backend/.env.local
+/backend/.env.*.local
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# Celery stuff:
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# Frontend build outputs
+/frontend/dist/
+/frontend/build/
+/frontend/out/
+
+# Frontend cache
+/frontend/.vite/
+/frontend/.cache/
+
+# Frontend environment variables
+/frontend/.env.local
+/frontend/.env.*.local
+
+# Typescript cache
+/frontend/**/*.tsbuildinfo
+
+# Optional eslint cache
+/frontend/.eslintcache
+
+# parcel-bundler cache (https://parceljs.org/)
+/frontend/.parcel-cache
+
+# next.js build output
+/frontend/.next/
+/frontend/out/
+
+# nuxt.js build output
+/frontend/.nuxt/
+
+# vuepress build output
+/frontend/.vuepress/dist/
+
+# serverless directories
+/frontend/.serverless/
+
+# fuse-box output
+/frontend/fuse-dist/
+
+# webpack output
+/frontend/webpack-stats.json
+
+# Rollup cache
+/frontend/.rollup.cache/
+
+# Angular build artifacts
+/frontend/dist/
+/frontend/tmp/
+/frontend/out-tsc/
+
+# Ember build artifacts
+/frontend/dist/
+/frontend/tmp/
+/frontend/assets/
+/frontend/ember-cli/
