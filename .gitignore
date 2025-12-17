@@ -73,6 +73,7 @@ docker-compose.override.yml
 /backend/.env
 /backend/.env.local
 /backend/.env.*.local
+/Brief_Explanation.md
 
 # Virtual environments
 venv/

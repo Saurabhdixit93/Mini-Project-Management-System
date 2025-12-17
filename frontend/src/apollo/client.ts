@@ -4,7 +4,7 @@ import { onError } from "@apollo/client/link/error";
 // Check if we're in development or production
 const isDevelopment = process.env.NODE_ENV === "development";
 const backendUrl = isDevelopment
-  ? "http://localhost:8001/graphql/"
+  ? "http://localhost:8000/graphql/"
   : "/graphql/";
 
 const httpLink = new HttpLink({
